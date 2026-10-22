@@ -10,3 +10,9 @@
 
 /* Keep local assets working when hosted below a project path, such as GitHub Pages. */
 .reference-avatar{background-image:url('./public/assets/note-reference.jpg')}
+
+/* Mobile browsers already render the real system status bar. */
+.status-bar{display:none}
+.screen{height:100%}
+.overlay{inset:0}
+#creation.creation-full,#creation.creation-editor{inset:0}
