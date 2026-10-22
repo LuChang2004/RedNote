@@ -1,3 +1,4 @@
+import { openRouteEditor, hasRouteDraft } from './route-editor.js';
 const root = document.createElement('div');
 root.id = 'creation';
 root.hidden = true;
@@ -18,13 +19,23 @@ const icons = {
  chevron:svg('<path d="m9 5 7 7-7 7"/>')
 };
 const imageIds = ['photo-1501339847302-ac426a4a7cbb','photo-1519501025264-65ba15a82390','photo-1475924156734-496f6cac6ec1','photo-1442512595331-e89e73853f31','photo-1464822759023-fed622ff2c3b','photo-1600210492486-724fe5c67fb0','photo-1495474472287-4d71bcdd2085','photo-1447933601403-0c6688de566e'];
-const media = Array.from({length:18},(_,i)=>({id:'sample-'+i,src:`https://images.unsplash.com/${imageIds[i%imageIds.length]}?auto=format&fit=crop&w=500&q=85`,type:i%7===0?'视频':i%4===0?'实况图':'照片'}));
+const media = Array.from({length:18},(_,i)=>({id:'sample-'+i,src:new URL(`./public/assets/publish/sample-${i%imageIds.length}.jpg`,import.meta.url).href,type:i%7===0?'视频':i%4===0?'实况图':'照片'}));
+let routeResume=false;
 let selected=[], filter='全部', mode='normal', stage='menu', draft=null, title='',body='';
+export function navigateCreation(page){
+ if(page==='close'){close();return;}
+ root.hidden=false;
+ if(page==='menu'){openCreationMenu();return;}
+ if(page==='album'){mode='travel';album();return;}
+ if(page==='text'){editor();return;}
+ stage='route';mode='travel';
+ openRouteEditor(root,[],()=>album(),false,page==='publish'?'publish':'route');
+}
 const escape = s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function close(){root.hidden=true;root.innerHTML='';document.querySelectorAll('.screen').forEach(el=>el.inert=false);document.querySelector('[data-action="publish"]').focus();}
 export function openCreationMenu(){stage='menu';root.hidden=false;root.className='creation-menu-overlay';root.innerHTML=`<section class="creation-actions" role="dialog" aria-modal="true" aria-label="选择创作方式"><button data-create="album">从相册选择</button><button data-create="camera">相机<small>拍摄与直播</small></button><button data-create="text">写文字</button><button data-create="travel">写出游<span class="new-entry">新</span></button><button class="creation-cancel" data-create="close">取消</button></section>`;}
 function album(reset=false){
- if(reset){selected=[];filter='全部';title='';body='';}
+ if(reset){selected=[];filter='全部';title='';body='';routeResume=false;}
  stage='album';root.hidden=false;root.className='creation-full';
  root.innerHTML=`<header class="album-header"><button class="creation-icon" data-create="close" aria-label="关闭相册">${icons.close}</button><button class="album-source" data-create="source">Recents ${icons.down}</button><button class="draft-button" data-create="draft">${icons.draft} 草稿箱</button></header>${mode==='travel'?'<div class="travel-context">写出游 <span>选几张旅途照片，记录你的出游</span></div>':''}<nav class="album-tabs" aria-label="媒体类型">${['全部','视频','照片','实况图','全屏图'].map(t=>`<button data-filter="${t}" class="${filter===t?'active':''}">${t}</button>`).join('')}</nav><div class="album-grid"></div><footer class="album-footer"><div class="selected-media"></div><div class="album-buttons"><button class="auto-film" data-create="film">${icons.film} 一键成片</button><button class="album-next" data-create="next"></button></div><p class="album-hint">示例相册 · 可从 Recents 导入本地照片</p></footer>`;
  renderGrid();renderSelection();
@@ -62,14 +73,14 @@ root.addEventListener('click',e=>{
  case 'camera':mode='normal';album(true);importFiles(true);break;
  case 'text':mode='normal';selected=[];title='';body='';editor();break;
  case 'source':importFiles();break;
- case 'next':if(selected.length)editor();break;
+ case 'next':if(selected.length){stage='route';openRouteEditor(root,selected.map(id=>({id,src:media.find(m=>m.id===id).src})),()=>{routeResume=true;album();},routeResume);}break;
  case 'back':title=root.querySelector('#creation-title')?.value||title;body=root.querySelector('#creation-body')?.value||body;album();break;
  case 'save-draft':title=root.querySelector('#creation-title').value;body=root.querySelector('#creation-body').value;draft={title,body,mode,selected:[...selected]};notice('已保存草稿（当前浏览会话）');break;
  case 'publish-note':title=root.querySelector('#creation-title').value.trim();body=root.querySelector('#creation-body').value.trim();notice(title||body?'发布演示完成（原型不会真实发布）':'请先填写标题或正文');break;
  case 'voice':notice('语音输入为交互占位');break;
  case 'content-notice':notice('可声明原创、AI辅助或转载内容');break;
- case 'draft':if(draft){({title,body,mode}=draft);selected=[...draft.selected];editor();}else notice('还没有草稿');break;
+ case 'draft':if(hasRouteDraft()){stage='route';openRouteEditor(root,[],()=>album(),true);}else if(draft){({title,body,mode}=draft);selected=[...draft.selected];editor();}else notice('还没有草稿');break;
  case 'film':notice('一键成片尚未接入视频生成');break;
  }
 });
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!root.hidden){e.stopImmediatePropagation();if(stage==='album')openCreationMenu();else if(stage==='editor')album();else close();}},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!root.hidden){e.stopImmediatePropagation();if(stage==='album')openCreationMenu();else if(stage==='editor')album();else if(stage==='route')root.querySelector('[data-route-action="back"]').click();else close();}},true);

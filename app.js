@@ -1,4 +1,4 @@
-import { openCreationMenu } from './creation.js?v=3';
+import { openCreationMenu, navigateCreation } from './creation.js?v=3';
 const $ = (s) => document.querySelector(s);
 const paths = {
   heart:'<path d="M12 21S2 14.8 2 8.3C2 2.9 8.5 1.3 12 5.5c3.5-4.2 10-2.6 10 2.8C22 14.8 12 21 12 21Z"/>',
@@ -21,6 +21,8 @@ const esc = (str) => String(str).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;',
 const photo = (id,w=800) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=85`;
 const coffeeImages = [photo('photo-1442512595331-e89e73853f31'),photo('photo-1501339847302-ac426a4a7cbb'),photo('photo-1495474472287-4d71bcdd2085'),photo('photo-1447933601403-0c6688de566e')];
 const notes = [
+  {id:'anthropic-claude',title:'第一反应是Anthropic和ClaudeAI',user:'日常碎片',likes:0,image:'./public/assets/anthropic-claude.jpg',images:['./public/assets/anthropic-claude.jpg'],body:[],tags:['Anthropic','ClaudeAI','日常碎片'],ratio:'3/4'},
+  {id:'apple-jingan-duo',title:'全球只有4个的 DUO 雕塑，就在 Apple 静安❓',user:'城市漫游',likes:0,image:'./public/assets/apple-jingan-duo.jpg',images:['./public/assets/apple-jingan-duo.jpg'],body:[],tags:['Apple静安','上海Citywalk','城市雕塑'],ratio:'3/4'},
   {id:'coffee',title:'M Stand新出的盲盒有人懂吗！好可爱！！',user:'小可的日常',likes:478,reference:true,avatar:5},
   {id:'walk',title:'在城市里，找一个下午慢慢走',user:'走走停停',likes:1068,image:photo('photo-1519501025264-65ba15a82390'),ratio:'3/4',avatar:44},
   {id:'cafe',title:'把周末留给咖啡和阳光☕️',user:'一只栗子',likes:289,image:coffeeImages[1],ratio:'1/1',avatar:25},
@@ -52,10 +54,10 @@ function openNote(id,updateHistory=true){
   $('.author-avatar').style.backgroundSize=id==='coffee'?'':'cover';
   $('#note-title').textContent=currentNote.title;
   const isCoffee=id==='coffee';
-  $('#note-body').innerHTML=(isCoffee?coffeeBody:['把生活里的小小发现记录下来，分享给同样喜欢的你。','不用着急，留一点时间给自己，感受今天的好天气。','照片里都是我喜欢的瞬间，欢迎在评论区一起聊聊。']).map(t=>`<p>${t}</p>`).join('');
-  const tags=isCoffee?['MStand','MStand联名','Fuwala','MStand荞麦乌龙水牛乳系列','MStand联名盲盒','MStandFuwala联名盲盒','天津咖啡','我的咖啡日记','咖啡探店']:['生活记录','日常碎片','发现生活的美好'];
+  $('#note-body').innerHTML=(currentNote.body??(isCoffee?coffeeBody:['把生活里的小小发现记录下来，分享给同样喜欢的你。','不用着急，留一点时间给自己，感受今天的好天气。','照片里都是我喜欢的瞬间，欢迎在评论区一起聊聊。'])).map(t=>`<p>${esc(t)}</p>`).join('');
+  const tags=currentNote.tags??(isCoffee?['MStand','MStand联名','Fuwala','MStand荞麦乌龙水牛乳系列','MStand联名盲盒','MStandFuwala联名盲盒','天津咖啡','我的咖啡日记','咖啡探店']:['生活记录','日常碎片','发现生活的美好']);
   $('#hashtags').innerHTML=tags.map(t=>`<button data-tag="${t}">#${t}</button>`).join(' ');
-  const images=isCoffee?[null,...Array.from({length:10},(_,i)=>coffeeImages[i%4])]:[currentNote.image||coffeeImages[0],coffeeImages[1],coffeeImages[2]];
+  const images=currentNote.images??(isCoffee?[null,...Array.from({length:10},(_,i)=>coffeeImages[i%4])]:[currentNote.image||coffeeImages[0],coffeeImages[1],coffeeImages[2]]);
   $('#gallery-track').innerHTML=images.map((src,i)=>src?`<div class="gallery-slide"><img src="${src}" alt="笔记图片 ${i+1}" ${i?'loading="lazy"':''}/></div>`:`<div class="gallery-slide hero-reference"><img src="./public/assets/note-reference.jpg" alt="M Stand咖啡与毛绒盲盒"/></div>`).join('');
   if(currentNote.crop)$('#gallery-track').firstElementChild.innerHTML=`<div class="card-media reference-crop crop-${currentNote.crop}" style="height:100%"><img src="./public/assets/feed-reference.jpg" alt="${esc(currentNote.title)}"/></div>`;
   slide=0;updateGallery();updateActions();renderComments();$('#detail-scroll').scrollTop=0;
@@ -119,3 +121,30 @@ let startX=0;$('#gallery').addEventListener('touchstart',e=>startX=e.touches[0].
 $('#gallery').addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();slide=Math.max(0,Math.min($('#gallery-track').children.length-1,slide+(e.key==='ArrowRight'?1:-1)));updateGallery();}});
 window.addEventListener('popstate',()=>location.hash.startsWith('#note/')?openNote(location.hash.split('/')[1],false):showFeed());
 hydrateIcons();renderFeed();if(location.hash.startsWith('#note/'))openNote(location.hash.split('/')[1],false);
+
+// Prototype-only navigator stays outside phone overlays and inert screens.
+const previewNav=document.createElement('aside');
+previewNav.className='preview-nav';
+previewNav.setAttribute('aria-label','原型页面导航');
+const previewPages=[['feed','首页 · 信息流'],['note','笔记详情'],['comments','笔记评论'],['menu','创作入口'],['album','相册选图'],['route','路线编辑'],['publish','路线发布'],['text','普通笔记发布']];
+previewNav.innerHTML=`<button class="preview-nav-toggle" aria-expanded="false" aria-controls="preview-nav-panel">☷ 页面导航</button><nav id="preview-nav-panel" hidden><header><strong>原型页面</strong><button aria-label="收起导航">×</button></header><p>直接跳转，无需逐步操作</p>${previewPages.map(([id,label])=>`<button data-preview-page="${id}">${label}</button>`).join('')}</nav>`;
+document.body.append(previewNav);
+const navToggle=previewNav.querySelector('.preview-nav-toggle');
+const navPanel=previewNav.querySelector('nav');
+function togglePreviewNav(open){navPanel.hidden=!open;navToggle.setAttribute('aria-expanded',String(open));}
+previewNav.addEventListener('click',e=>{
+ if(e.target.closest('.preview-nav-toggle')){togglePreviewNav(navPanel.hidden);return;}
+ if(e.target.closest('header button')){togglePreviewNav(false);navToggle.focus();return;}
+ const target=e.target.closest('[data-preview-page]');if(!target)return;
+ const page=target.dataset.previewPage;closeSheet();navigateCreation('close');
+ history.replaceState(null,'',location.pathname+location.search);
+ showFeed();
+ if(page==='note'||page==='comments'){
+  openNote('coffee',false);
+  if(page==='comments')requestAnimationFrame(()=>$('#comments').scrollIntoView({block:'start'}));
+ }else if(page!=='feed')navigateCreation(page);
+ togglePreviewNav(false);
+ navToggle.focus();
+});
+document.addEventListener('pointerdown',e=>{if(!previewNav.contains(e.target))togglePreviewNav(false);});
+previewNav.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();togglePreviewNav(false);navToggle.focus();}});

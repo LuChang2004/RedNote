@@ -51,3 +51,58 @@
 .creation-editor .draft-submit{width:33%;background:#fff!important;color:#444!important;border:1px solid #e5e5e5}
 .creation-editor .publish-submit{flex:1;width:auto!important;background:#ff2442!important;color:#fff!important}
 .creation-editor .creation-notice{bottom:102px}
+
+/* Figma 5:16 / 5:586 — route composition and publishing */
+@font-face{font-family:"RedNote Noto";src:url('./public/assets/publish/noto-sans-sc.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+.route-host{position:relative;display:flex;flex-direction:column;height:100%;min-height:0;color:#333;background:#fff;font-family:"RedNote Noto","Noto Sans SC","PingFang SC",sans-serif;font-weight:400}
+.route-host input,.route-host textarea{color:inherit;background:transparent;border:0;border-radius:0;padding:0;min-width:0;outline:none;font:inherit;resize:none}
+.route-host input:focus-visible,.route-host textarea:focus-visible{outline:1px solid #ffd2da;outline-offset:3px}
+.route-icon{display:block;flex-shrink:0;max-width:none}
+.route-header{height:64px;flex:none;display:flex;align-items:center;padding-left:22px}
+.route-header button{width:26px;height:26px}
+.route-scroll{flex:1;min-height:0;overflow:auto;scrollbar-width:none;padding:0 17px 24px}
+.route-scroll::-webkit-scrollbar,.route-media::-webkit-scrollbar,.route-stop-photos::-webkit-scrollbar,.route-topics::-webkit-scrollbar{display:none}
+.route-host .route-title{display:block;width:100%;font-size:20px;line-height:30px;height:30px;font-weight:400}
+.route-host .route-body{display:block;width:100%;font-size:14px;line-height:21px;height:126px;margin-top:8px}
+.route-stops{margin-top:22px;padding-bottom:80px}
+.route-stop{height:204px;position:relative}
+.route-stop-heading{display:flex;align-items:center;gap:8px;height:21px;font-size:14px;line-height:21px;white-space:nowrap;position:relative;top:1px}
+.route-stop-heading>input:first-of-type{flex:1;width:0}
+.route-cost{display:flex;align-items:center;gap:2px;flex:none}
+.route-cost input{width:2ch;text-align:center}
+.route-stop-heading .route-duration{width:34px;margin-left:4px;text-align:right}
+.route-stop-content{position:relative;margin-left:28px;margin-top:5px;display:flex;flex-direction:column;gap:12px}
+.route-host .route-stop-content textarea{height:63px;width:100%;font-size:14px;line-height:21px;color:#999;flex:none}
+.route-connector{position:absolute;left:-17px;top:-2px;transform-origin:top left;transform:rotate(90deg)}
+.route-stop-photos,.route-media{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.route-photo{position:relative;flex:0 0 86px;height:86px;border-radius:8px;overflow:hidden}
+.route-photo>img{display:block;width:86px;height:86px;object-fit:cover}
+.route-photo>span{position:absolute;top:4px;right:4px;width:19px;height:19px;border-radius:5px;display:grid;place-items:center;background:#3339;color:white;font-size:11px;line-height:17px}
+.route-ai-input{position:absolute;z-index:2;left:17px;right:17px;bottom:103px;display:flex;align-items:center;gap:8px;min-height:53px;padding:16px;border-radius:16px;background:#ffffffb3;backdrop-filter:blur(2px);box-shadow:0 4px 24px #0000001a;font-size:14px;line-height:21px}
+.route-ai-input input{width:100%;flex:1}.route-ai-input input::placeholder{color:#333}
+.route-ai-input button{display:none;flex:none;color:#ff2442}.route-ai-input:focus-within button{display:block}
+.route-footer{flex:none;height:86px;padding:11px 17px 27px;display:flex;gap:12px;background:white;z-index:3}
+.route-footer button{height:48px;border-radius:27px;font-size:17px;line-height:26px;border:1px solid #eee;width:32.8283%;white-space:nowrap}
+.route-footer button:last-child{flex:1;background:#ff2442;color:white;border-color:#ff2442}
+.route-publishing{padding-top:16px;padding-bottom:24px}
+.route-media{height:86px;flex:none}
+.route-add-photo{flex:0 0 86px;height:86px;border-radius:8px;border:1px solid #eee;background:#f6f6f6;display:grid;place-items:center}
+.route-publishing .route-title{margin-top:25px;margin-bottom:12px}
+.route-publishing .route-body{height:178px;margin:0;padding-top:8px}
+.route-summary{padding:16px 0;display:flex;flex-direction:column;gap:11px}
+.route-topics{display:flex;gap:8px;height:35px;overflow-x:auto;scrollbar-width:none;margin-right:-17px}
+.route-topics button,.route-tools button{background:#f6f6f6;padding:7px 12px;border-radius:18px;white-space:nowrap;flex:none;font-size:14px;line-height:21px}
+.route-topics button{color:#999}.route-tools{display:flex;gap:10px;height:54px;padding:9px 0 10px}
+.route-options{border-top:1px solid #eee;border-bottom:1px solid #eee}
+.route-options button{height:52px;width:100%;display:flex;align-items:center;gap:8px;font-size:14px;text-align:left}
+.route-options button span{flex:1}
+.route-notice{display:flex;gap:3px;align-items:flex-start;padding-top:14px;font-size:13px;line-height:20px;color:#999}
+.route-source{font-size:11px;line-height:1.7;color:#999;margin:16px 0 60px}.route-source a{color:#667f8d}.route-host .route-title{font-size:19px}.route-host .route-stop-content textarea{height:84px}.route-stop{height:225px}.route-connector{height:1px}.route-stop-heading>input:first-of-type{font-size:13px}
+.preview-nav{position:fixed;right:max(12px,calc((100vw - 430px)/2 - 150px));top:max(12px,env(safe-area-inset-top));z-index:1000;font-family:-apple-system,"PingFang SC",sans-serif;color:#333}
+.preview-nav-toggle{height:34px;padding:0 12px;border:1px solid #e8e8e8;border-radius:18px;background:#fffffff0;box-shadow:0 2px 12px #00000012;font-size:12px;backdrop-filter:blur(12px)}
+#preview-nav-panel{position:absolute;right:0;top:44px;width:220px;max-height:calc(100dvh - 76px);overflow:auto;background:#fffffff7;border:1px solid #eee;border-radius:16px;padding:14px;box-shadow:0 12px 40px #0002;backdrop-filter:blur(16px)}
+#preview-nav-panel header{display:flex;align-items:center;justify-content:space-between;font-size:14px}#preview-nav-panel header button{font-size:24px;width:28px;height:28px;color:#888}
+#preview-nav-panel p{font-size:11px;color:#999;margin:3px 0 12px}
+#preview-nav-panel>button{display:block;width:100%;padding:11px 12px;text-align:left;border-radius:8px;font-size:13px;margin-top:3px;background:#f7f7f7}
+#preview-nav-panel>button:hover,#preview-nav-panel>button:focus-visible{background:#fff0f3;color:#ff2442}
+@media(max-width:380px){.route-host .route-body{height:147px}.route-stop-heading{gap:6px}.route-stop-content textarea{overflow:auto}.route-stops{margin-top:22px}}
