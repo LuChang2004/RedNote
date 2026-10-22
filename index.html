@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>小红书 · 生活的兴趣社区</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="phone" id="app">
+    <div class="status-bar" aria-hidden="true"><div class="clock">16:21 <span class="focus-icon"></span></div><div class="status-right"><span class="signal"><i></i><i></i><i></i><i></i></span><svg class="wifi" viewBox="0 0 26 22"><path d="M3 7c5.5-5 14.5-5 20 0M7 12c3.5-3 8.5-3 12 0"/><circle cx="13" cy="17" r="2"/></svg><span class="battery"><b>27</b></span></div></div>
+    <section class="screen feed-screen" id="feed-screen">
+      <header class="feed-header"><button class="icon-button" data-action="menu" aria-label="打开侧边栏" data-icon="menu"></button><nav class="top-tabs" aria-label="内容分类"><button data-tab="关注">关注</button><button class="active" data-tab="发现">发现</button><button data-tab="附近">附近</button></nav><button class="icon-button" data-action="search" aria-label="搜索笔记" data-icon="search"></button></header>
+      <div class="feed-scroll" id="feed-scroll"><div class="search-panel" hidden><input id="search-input" type="search" placeholder="搜索你感兴趣的生活" aria-label="搜索笔记"/><button data-action="close-search">取消</button></div><div class="masonry" id="feed"></div><p class="feed-end">已经看完啦，去发现更多生活灵感</p></div>
+      <nav class="bottom-nav" aria-label="主导航"><button class="selected" data-action="home">首页</button><button data-action="market">市集</button><button class="publish" data-action="publish" aria-label="发布笔记" data-icon="plus"></button><button data-action="messages">消息</button><button data-action="profile">我</button></nav>
+    </section>
+    <section class="screen detail-screen" id="detail-screen" hidden>
+      <header class="detail-header"><button class="icon-button back" data-action="back" aria-label="返回信息流" data-icon="back"></button><div class="author-avatar reference-avatar"></div><button class="author-name" data-action="author">小可的日常</button><button class="follow-button" data-action="follow">关注</button><button class="icon-button share" data-action="share" aria-label="分享笔记" data-icon="share"></button></header>
+      <article class="detail-scroll" id="detail-scroll">
+        <div class="gallery" id="gallery" tabindex="0" aria-label="笔记图片，左右滑动切换"><div class="gallery-track" id="gallery-track"></div><span class="image-counter" id="image-counter">1/11</span></div>
+        <div class="gallery-dots" id="gallery-dots"></div>
+        <div class="note-copy"><h1 id="note-title"></h1><div id="note-body"></div><div class="hashtags" id="hashtags"></div><div class="post-meta"><span>昨天 15:56 天津</span><button data-action="dislike"><span data-icon="neutral"></span>不喜欢</button></div></div>
+        <section class="comments" id="comments"><button class="comment-heading" data-action="sort-comments">共 <span id="comment-total">29</span> 条评论 <span data-icon="sort"></span></button><div class="comment-entry"><img class="avatar" src="./public/assets/avatar.svg" alt="我的头像"/><button class="comment-placeholder" data-action="comment"><span>让大家听到你的声音</span><span data-icon="mic"></span><span data-icon="image"></span></button></div><div id="comment-list"></div><p class="comments-end">— 已经到底啦 —</p></section>
+      </article>
+      <footer class="detail-footer"><button class="write-comment" data-action="comment"><span data-icon="edit"></span><span>说点什么...</span></button><button class="action-count" data-action="like" aria-label="点赞" aria-pressed="false"><span data-icon="heart"></span><span id="like-count">478</span></button><button class="action-count" data-action="save" aria-label="收藏" aria-pressed="false"><span data-icon="star"></span><span id="save-count">330</span></button><button class="action-count" data-action="jump-comments" aria-label="查看评论"><span data-icon="comment"></span><span id="bottom-comment-count">29</span></button></footer>
+    </section>
+    <div class="overlay" id="overlay" hidden><div class="sheet" role="dialog" aria-modal="true" aria-label="操作面板"><div class="sheet-handle"></div><div id="sheet-content"></div></div></div>
+    <div class="toast" id="toast" role="status"></div>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
