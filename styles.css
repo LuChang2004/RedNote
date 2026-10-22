@@ -16,3 +16,38 @@
 .screen{height:100%}
 .overlay{inset:0}
 #creation.creation-full,#creation.creation-editor{inset:0}
+
+/* Native note publishing editor */
+#creation.creation-editor{background:#fff;color:#262626}
+.creation-editor .editor-header{height:64px;justify-content:flex-start;padding:14px 22px 5px;border:0}
+.creation-editor .editor-header span{display:none}
+.creation-editor .editor-header .creation-icon{width:24px;height:24px;color:#888}
+.creation-editor .editor-scroll{padding:16px 17px 112px;scrollbar-width:none}
+.creation-editor .editor-scroll::-webkit-scrollbar{display:none}
+.creation-editor .editor-media{gap:8px;margin:0 0 18px;min-height:88px}
+.editor-media-item{width:86px;height:86px;position:relative;flex:0 0 86px}
+.editor-media-item img{width:100%;height:100%;object-fit:cover;border-radius:8px;display:block}
+.editor-media-item span{position:absolute;right:4px;top:4px;min-width:19px;height:19px;padding:0 4px;border-radius:5px;background:#666d;color:#fff;display:grid;place-items:center;font-size:11px}
+.creation-editor .editor-add-media{width:86px;height:86px;flex:0 0 86px;border:1px solid #eee;background:#f7f7f7;border-radius:8px;color:#c7c7c7;font-size:41px;font-weight:200}
+.creation-editor .editor-scroll>input{height:49px;padding:7px 0;border:0;font-size:20px;font-weight:500;color:#222}
+.creation-editor input::placeholder,.creation-editor textarea::placeholder{color:#c8c8c8;font-weight:400}
+.editor-body-wrap{position:relative;min-height:170px}
+.creation-editor .editor-body-wrap textarea{width:100%;min-height:170px;padding:8px 38px 10px 0;border:0;resize:none;outline:0;font-size:18px;line-height:1.65;color:#333}
+.editor-mic{position:absolute;right:4px;top:12px;width:23px;height:23px;color:#aaa}
+.topic-suggestions{display:flex;gap:8px;overflow-x:auto;margin:1px 0 12px;scrollbar-width:none}
+.topic-suggestions button{flex-shrink:0;background:#f6f6f6;border-radius:18px;padding:7px 12px;color:#999;font-size:14px}
+.editor-tools{display:flex;gap:10px;padding-bottom:14px;border-bottom:1px solid #eee}
+.editor-tools button{background:#f6f6f6;border-radius:18px;padding:7px 13px;font-size:15px}
+.editor-tools b{font-size:20px;line-height:0;vertical-align:-1px}
+.publish-options>button{height:52px;width:100%;border-bottom:1px solid #f1f1f1;display:grid;grid-template-columns:22px 1fr 18px;align-items:center;gap:8px;text-align:left;font-size:16px}
+.publish-options>button svg{width:20px;height:20px}.publish-options>button svg:last-child{color:#bbb;width:16px}
+.location-suggestions{display:flex;gap:8px;overflow-x:auto;padding:0 0 11px;scrollbar-width:none}
+.location-suggestions button{flex-shrink:0;background:#f6f6f6;border-radius:18px;padding:7px 12px;color:#999;font-size:13px}
+.location-suggestions button.selected{background:#fff0f3;color:#ff2442}
+.content-notice{display:flex;align-items:center;gap:3px;color:#777;font-size:13px;margin-top:14px}
+.content-notice svg{width:14px;height:14px;color:#aaa}
+.creation-editor .editor-footer{height:86px;position:absolute;bottom:0;left:0;right:0;background:#fff;padding:11px 17px 25px;border-top:1px solid #f4f4f4;display:flex;gap:12px;z-index:3}
+.creation-editor .editor-footer button{height:48px;margin:0;border-radius:27px;font-size:17px}
+.creation-editor .draft-submit{width:33%;background:#fff!important;color:#444!important;border:1px solid #e5e5e5}
+.creation-editor .publish-submit{flex:1;width:auto!important;background:#ff2442!important;color:#fff!important}
+.creation-editor .creation-notice{bottom:102px}

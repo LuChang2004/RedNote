@@ -1,4 +1,4 @@
-import { openCreationMenu } from './creation.js';
+import { openCreationMenu } from './creation.js?v=3';
 const $ = (s) => document.querySelector(s);
 const paths = {
   heart:'<path d="M12 21S2 14.8 2 8.3C2 2.9 8.5 1.3 12 5.5c3.5-4.2 10-2.6 10 2.8C22 14.8 12 21 12 21Z"/>',

@@ -9,7 +9,13 @@ const icons = {
  back:svg('<path d="m15 4-8 8 8 8"/>'),
  draft:svg('<path d="m3 10 3-7h12l3 7v10H3V10Z"/><path d="M3 11h6l1 3h4l1-3h6"/>'),
  film:svg('<path d="M8 3C3 4 1 9 3 14m2 5c4 4 10 3 14-1m3-5c1-5-2-9-7-11"/><path d="m9 7 8 5-8 5Z"/>'),
- live:svg('<circle cx="12" cy="12" r="9" stroke-dasharray="1 3"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="3"/>')
+ live:svg('<circle cx="12" cy="12" r="9" stroke-dasharray="1 3"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="3"/>'),
+ mic:svg('<rect x="8" y="2" width="8" height="13" rx="4"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3"/>'),
+ location:svg('<path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/>'),
+ lock:svg('<rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>'),
+ grid:svg('<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>'),
+ gear:svg('<circle cx="12" cy="12" r="3"/><path d="M19 14.5l2 1.5-2 3-2.4-1a8 8 0 0 1-2.1 1.2L14 22h-4l-.5-2.8A8 8 0 0 1 7.4 18L5 19l-2-3 2-1.5a8 8 0 0 1 0-5L3 8l2-3 2.4 1a8 8 0 0 1 2.1-1.2L10 2h4l.5 2.8A8 8 0 0 1 16.6 6L19 5l2 3-2 1.5a8 8 0 0 1 0 5Z"/>'),
+ chevron:svg('<path d="m9 5 7 7-7 7"/>')
 };
 const imageIds = ['photo-1501339847302-ac426a4a7cbb','photo-1519501025264-65ba15a82390','photo-1475924156734-496f6cac6ec1','photo-1442512595331-e89e73853f31','photo-1464822759023-fed622ff2c3b','photo-1600210492486-724fe5c67fb0','photo-1495474472287-4d71bcdd2085','photo-1447933601403-0c6688de566e'];
 const media = Array.from({length:18},(_,i)=>({id:'sample-'+i,src:`https://images.unsplash.com/${imageIds[i%imageIds.length]}?auto=format&fit=crop&w=500&q=85`,type:i%7===0?'视频':i%4===0?'实况图':'照片'}));
@@ -32,7 +38,11 @@ function renderSelection(){
  const next=root.querySelector('.album-next');next.textContent=`下一步${selected.length?' ('+selected.length+')':''}`;next.disabled=!selected.length;
  root.querySelector('.auto-film').disabled=!selected.length;
 }
-function editor(){stage='editor';root.className='creation-editor';root.innerHTML=`<header class="editor-header"><button class="creation-icon" data-create="back" aria-label="返回素材选择">${icons.back}</button><strong>${mode==='travel'?'写出游':'写笔记'}</strong><button data-create="save-draft">存草稿</button></header><div class="editor-scroll"><div class="editor-media">${selected.map(id=>`<img src="${media.find(m=>m.id===id).src}" alt="所选照片"/>`).join('')}<button data-create="back" aria-label="添加照片">+</button></div><input id="creation-title" aria-label="笔记标题" maxlength="40" placeholder="${mode==='travel'?'给这次出游起个名字':'填写标题会有更多赞哦'}" value="${escape(title)}"/><textarea id="creation-body" aria-label="笔记正文" placeholder="${mode==='travel'?'去过哪里，有哪些喜欢的瞬间？像平常一样写下来…':'分享你的生活瞬间…'}">${escape(body)}</textarea>${mode==='travel'?'<div class="travel-design-note"><strong>从记录出发，让路线自然成形</strong><p>先自由写、自由选图，不需要填写路线模板。</p><small>路线识别与确认将在下一步设计中接入；当前不会进行 AI 分析。</small></div>':''}</div><footer class="editor-footer"><button data-create="save-draft">保存到草稿箱</button><p>前端创作原型 · 不会发布到小红书</p></footer>`;}
+function editor(){
+ stage='editor';root.className='creation-editor';
+ const topicSuggestions=mode==='travel'?['#周末去哪儿','#城市漫游','#出游攻略','#旅行碎片']:['#强壮的男人','#健身就能改变人生','#健身','#健身日常'];
+ root.innerHTML=`<header class="editor-header"><button class="creation-icon" data-create="back" aria-label="返回素材选择">${icons.back}</button><span>${mode==='travel'?'写出游':'发布笔记'}</span></header><div class="editor-scroll"><div class="editor-media">${selected.map((id,i)=>`<div class="editor-media-item"><img src="${media.find(m=>m.id===id).src}" alt="所选照片 ${i+1}"/><span>${i+1}</span></div>`).join('')}<button class="editor-add-media" data-create="back" aria-label="添加照片">+</button></div><input id="creation-title" aria-label="笔记标题" maxlength="40" placeholder="添加标题" value="${escape(title)}"/><div class="editor-body-wrap"><textarea id="creation-body" aria-label="笔记正文" placeholder="添加正文">${escape(body)}</textarea><button data-create="voice" class="editor-mic" aria-label="语音输入">${icons.mic}</button></div><div class="topic-suggestions">${topicSuggestions.map(t=>`<button data-topic-insert="${t}">${t}</button>`).join('')}</div><div class="editor-tools"><button data-tool="topic"><b>#</b> 话题</button><button data-tool="user"><b>@</b> 用户</button><button data-tool="poll"><b>◉</b> 投票</button></div><div class="publish-options"><button data-option="location">${icons.location}<span>标记地点</span>${icons.chevron}</button><div class="location-suggestions"><button data-location="江湾里 MEET678">江湾里 MEET678</button><button data-location="上海国华广场">上海国华广场</button><button data-location="嘉·PEONY中原会馆">嘉·PEONY中原会馆</button></div><button data-option="visibility">${icons.lock}<span>公开可见</span>${icons.chevron}</button><button data-option="component">${icons.grid}<span>添加组件</span>${icons.chevron}</button><button data-option="advanced">${icons.gear}<span>高级选项</span>${icons.chevron}</button></div><button class="content-notice" data-create="content-notice">笔记内容声明 ${icons.chevron}</button></div><footer class="editor-footer"><button class="draft-submit" data-create="save-draft">存草稿</button><button class="publish-submit" data-create="publish-note">发布笔记</button></footer>`;
+}
 function importFiles(camera=false){const input=document.createElement('input');input.type='file';input.accept=camera?'image/*':'image/*';input.multiple=!camera;if(camera)input.setAttribute('capture','environment');input.onchange=()=>{for(const f of input.files){if(!f.type.startsWith('image/'))continue;const id='local-'+Date.now()+'-'+media.length;media.unshift({id,src:URL.createObjectURL(f),type:'照片'});if(selected.length<18)selected.push(id);}album();};input.click();}
 function notice(text){const el=document.createElement('div');el.className='creation-notice';el.setAttribute('role','status');el.textContent=text;root.append(el);setTimeout(()=>el.remove(),2600);}
 root.addEventListener('click',e=>{
@@ -40,6 +50,10 @@ root.addEventListener('click',e=>{
  const item=e.target.closest('[data-media]');if(item){const id=item.dataset.media;if(selected.includes(id))selected=selected.filter(x=>x!==id);else if(selected.length<18)selected.push(id);else notice('最多选择 18 个素材');renderGrid();renderSelection();return;}
  const remove=e.target.closest('[data-remove]');if(remove){selected=selected.filter(id=>id!==remove.dataset.remove);renderGrid();renderSelection();return;}
  const tab=e.target.closest('[data-filter]');if(tab){filter=tab.dataset.filter;root.querySelectorAll('[data-filter]').forEach(b=>b.classList.toggle('active',b===tab));renderGrid();return;}
+ const topic=e.target.closest('[data-topic-insert]');if(topic){const area=root.querySelector('#creation-body');area.value=`${area.value}${area.value?' ':''}${topic.dataset.topicInsert}`;body=area.value;return;}
+ const location=e.target.closest('[data-location]');if(location){root.querySelectorAll('[data-location]').forEach(b=>b.classList.toggle('selected',b===location));root.querySelector('[data-option="location"] span').textContent=location.dataset.location;return;}
+ const tool=e.target.closest('[data-tool]');if(tool){const area=root.querySelector('#creation-body');const addition=tool.dataset.tool==='topic'?'#话题 ':tool.dataset.tool==='user'?'@用户 ':'[投票] ';area.value+=addition;area.focus();return;}
+ const option=e.target.closest('[data-option]');if(option){const labels={visibility:'公开可见：所有人',component:'添加组件：商品、地点或小程序',advanced:'高级选项：允许下载与转载'};notice(labels[option.dataset.option]||'选择一个地点标记');return;}
  const action=e.target.closest('[data-create]')?.dataset.create;
  switch(action){
  case 'close':close();break;
@@ -51,6 +65,9 @@ root.addEventListener('click',e=>{
  case 'next':if(selected.length)editor();break;
  case 'back':title=root.querySelector('#creation-title')?.value||title;body=root.querySelector('#creation-body')?.value||body;album();break;
  case 'save-draft':title=root.querySelector('#creation-title').value;body=root.querySelector('#creation-body').value;draft={title,body,mode,selected:[...selected]};notice('已保存草稿（当前浏览会话）');break;
+ case 'publish-note':title=root.querySelector('#creation-title').value.trim();body=root.querySelector('#creation-body').value.trim();notice(title||body?'发布演示完成（原型不会真实发布）':'请先填写标题或正文');break;
+ case 'voice':notice('语音输入为交互占位');break;
+ case 'content-notice':notice('可声明原创、AI辅助或转载内容');break;
  case 'draft':if(draft){({title,body,mode}=draft);selected=[...draft.selected];editor();}else notice('还没有草稿');break;
  case 'film':notice('一键成片尚未接入视频生成');break;
  }
