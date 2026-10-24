@@ -11,11 +11,8 @@
 /* Keep local assets working when hosted below a project path, such as GitHub Pages. */
 .reference-avatar{background-image:url('./public/assets/note-reference.jpg')}
 
-/* Mobile browsers already render the real system status bar. */
-.status-bar{display:none}
-.screen{height:100%}
+/* Keep the simulated system status bar visible in the prototype. */
 .overlay{inset:0}
-#creation.creation-full,#creation.creation-editor{inset:0}
 
 /* Native note publishing editor */
 #creation.creation-editor{background:#fff;color:#262626}
