@@ -24,7 +24,7 @@ const notes = [
   {id:'anthropic-claude',title:'第一反应是Anthropic和ClaudeAI',user:'日常碎片',likes:0,image:'./public/assets/anthropic-claude.jpg',images:['./public/assets/anthropic-claude.jpg'],body:[],tags:['Anthropic','ClaudeAI','日常碎片'],ratio:'3/4'},
   {id:'apple-jingan-duo',title:'全球只有4个的 DUO 雕塑，就在 Apple 静安❓',user:'城市漫游',likes:0,image:'./public/assets/apple-jingan-duo.jpg',images:['./public/assets/apple-jingan-duo.jpg'],body:[],tags:['Apple静安','上海Citywalk','城市雕塑'],ratio:'3/4'},
   {id:'hiking',title:'⛰️⛰️⛰️',user:'小可的日常',likes:478,image:'./public/assets/hiking-note.jpg',images:['./public/assets/hiking-note.jpg'],body:[],tags:[],ratio:'3/4'},
-  {id:'walk',title:'在城市里，找一个下午慢慢走',user:'走走停停',likes:1068,image:photo('photo-1519501025264-65ba15a82390'),ratio:'3/4',avatar:44},
+  {id:'walk',title:'咪咪嘟逼人？',user:'走走停停',likes:1068,image:'./public/assets/cat-note.jpg',images:['./public/assets/cat-note.jpg'],body:[],tags:[],ratio:'3/4',avatar:44},
   {id:'cafe',title:'把周末留给咖啡和阳光☕️',user:'一只栗子',likes:289,image:coffeeImages[1],ratio:'1/1',avatar:25},
   {id:'sea',title:'海边的日落，是今天的小确幸',user:'小岛来信',likes:2046,image:photo('photo-1475924156734-496f6cac6ec1'),ratio:'3/4',avatar:49},
   {id:'interior',title:'喜欢这样的房间，安静又有温度',user:'住在好天气里',likes:756,image:photo('photo-1600210492486-724fe5c67fb0'),ratio:'4/5',avatar:32},
