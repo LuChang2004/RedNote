@@ -103,3 +103,11 @@
 #preview-nav-panel>button{display:block;width:100%;padding:11px 12px;text-align:left;border-radius:8px;font-size:13px;margin-top:3px;background:#f7f7f7}
 #preview-nav-panel>button:hover,#preview-nav-panel>button:focus-visible{background:#fff0f3;color:#ff2442}
 @media(max-width:380px){.route-host .route-body{height:147px}.route-stop-heading{gap:6px}.route-stop-content textarea{overflow:auto}.route-stops{margin-top:22px}}
+
+/* Figma 14:194: 402 × 874 display, with its original 450 × 920 image. */
+body{min-height:100dvh;display:grid;place-items:center;padding:12px}
+.device-preview{position:relative;width:min(450px,calc(100vw - 24px),calc((100dvh - 24px)*450/920));aspect-ratio:450/920}
+.device-canvas{position:absolute;inset:0 auto auto 0;width:450px;height:920px;transform:scale(var(--device-scale,1));transform-origin:top left}
+.device-canvas .phone{position:absolute;left:24px;top:23px;width:402px;height:874px;max-width:none;max-height:none;margin:0;border-radius:68px;box-shadow:none;outline:none}
+.device-frame{position:absolute;inset:0;width:450px;height:920px;display:block;pointer-events:none;z-index:100;object-fit:cover}
+.device-canvas .status-bar{padding-left:28px;padding-right:23px}

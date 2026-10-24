@@ -122,6 +122,12 @@ $('#gallery').addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight'].inclu
 window.addEventListener('popstate',()=>location.hash.startsWith('#note/')?openNote(location.hash.split('/')[1],false):showFeed());
 hydrateIcons();renderFeed();if(location.hash.startsWith('#note/'))openNote(location.hash.split('/')[1],false);
 
+// Scale the complete device, preserving the Figma screen and frame geometry.
+const devicePreview=document.querySelector('.device-preview');
+const resizeDevice=()=>devicePreview.style.setProperty('--device-scale',devicePreview.clientWidth/450);
+new ResizeObserver(resizeDevice).observe(devicePreview);
+resizeDevice();
+
 // Prototype-only navigator stays outside phone overlays and inert screens.
 const previewNav=document.createElement('aside');
 previewNav.className='preview-nav';
